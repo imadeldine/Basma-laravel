@@ -41,7 +41,7 @@ class ApiController extends Controller
         ], Response::HTTP_OK);
     }
  
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -77,45 +77,21 @@ class ApiController extends Controller
         return response()->json([
             'success' => true,
             'token' => $token,
+            'user' => auth()->user()
         ]);
     }
  
     public function logout(Request $request)
     {
         //valid credential
-        $validator = Validator::make($request->only('token'), [
-            'token' => 'required'
-        ]);
-
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
-        }
-
-		//Request is validated, do logout        
-        try {
-            JWTAuth::invalidate($request->token);
- 
-            return response()->json([
-                'success' => true,
-                'message' => 'User has been logged out'
-            ]);
-        } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, user cannot be logged out'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+       auth()->logout();
+       return response()->json([
+        'message'=> 'user logout'
+       ] );
     }
  
-    public function get_user(Request $request)
+    public function profile(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
- 
-        $user = JWTAuth::authenticate($request->token);
- 
-        return response()->json(['user' => $user]);
+       return response()->json(auth()->user());
     }
 }
