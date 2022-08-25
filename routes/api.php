@@ -16,6 +16,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('Week', [CustomerController::class, 'average_registrations_this_week']);
     Route::get('month', [CustomerController::class, 'average_registrations_last_month']);
     Route::get('year', [CustomerController::class, 'average_registrations_last_year']);
-    Route::get('GetCustomers', [CustomerController::class, 'index']);
     
 });
+Route::get('GetCustomers', [CustomerController::class, 'index']);

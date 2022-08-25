@@ -21,10 +21,11 @@ class CustomerController extends Controller
     //     ]);
     // }
 
-    public function index()
+    public function index(Request $request)
     {
+        $num=$request->num;
         $customers = Customer::select('id', 'firstname', 'email')
-        ->paginate(15);
+        ->paginate($num);
         return response()->json([
             'success' => true,
             'message' => 'Customers retrieved successfully',
