@@ -92,11 +92,12 @@ class CustomerController extends Controller
     public function register(Request $request)
     {
         //Validate data
-        $data = $request->only('firstname','lastname', 'email', 'password');
+        $data = $request->only('firstname','lastname', 'email', 'phone','password');
         $validator = Validator::make($data, [
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'email' => 'required|email|unique:customers',
+            'phone' => 'required|string|unique:customers|min:8',
             'password' => 'required|string|min:6|max:50'
         ]);
     
@@ -110,6 +111,7 @@ class CustomerController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => bcrypt($request->password)
         ]);
     
