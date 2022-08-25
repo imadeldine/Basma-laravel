@@ -14,9 +14,22 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     return view('customer.index', [
+    //         'customers' => DB::table('customers')->paginate(15)
+    //     ]);
+    // }
+
     public function index()
     {
-        //
+        $customers = Customer::select('id', 'firstname', 'email')
+        ->paginate(15);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], Response::HTTP_OK);
     }
 
     /**

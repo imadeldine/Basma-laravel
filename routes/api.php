@@ -14,3 +14,4 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 });
 Route::post('AddCustomer', [CustomerController::class, 'register']);
+Route::get('GetCustomers', [CustomerController::class, 'index']);
