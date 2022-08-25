@@ -103,7 +103,7 @@ class CustomerController extends Controller
     
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json(['error' => $validator->messages()], 500);
         }
     
         //Request is valid, create new user
