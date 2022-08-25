@@ -31,7 +31,58 @@ class CustomerController extends Controller
             'data' => $customers
         ], Response::HTTP_OK);
     }
+ 
+    public function average_registrations_per_day()
+    {
+        $customers = Customer::selectRaw('count(*) as count, date(created_at) as date')
+        ->groupBy('date')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], Response::HTTP_OK);
+    }
 
+    public function average_registrations_this_week()
+    {
+      
+        $customers = Customer::selectRaw('count(*) as count, date(created_at) as week')
+        ->whereRaw('date(created_at) >= curdate() - INTERVAL DAYOFWEEK(curdate())+1 DAY')
+        ->groupBy('week')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], Response::HTTP_OK);
+    }
+
+    public function average_registrations_last_month()
+    {
+        $customers = Customer::selectRaw('count(*) as count, date(created_at) as month')
+        ->whereRaw('date(created_at) >= curdate() - INTERVAL DAYOFMONTH(curdate())+1 DAY')
+        ->groupBy('month')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], Response::HTTP_OK);
+    }
+
+    public function average_registrations_last_year()
+    {
+        $customers = Customer::selectRaw('count(*) as count, date(created_at) as year')
+        ->whereRaw('date(created_at) >= curdate() - INTERVAL DAYOFYEAR(curdate())+1 DAY')
+        ->groupBy('year')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers
+        ], Response::HTTP_OK);
+    }
     /**
      * Show the form for creating a new resource.
      *
